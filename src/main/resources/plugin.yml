@@ -1,0 +1,4 @@
+name: Roulette
+version: '${version}'
+main: jp.houlab.alord2058.roulette.Roulette
+api-version: '1.20'

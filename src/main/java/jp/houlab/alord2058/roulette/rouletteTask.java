@@ -29,7 +29,7 @@ public class rouletteTask extends BukkitRunnable {
 
     public void playSoundTitle(final @NonNull Audience players, int rouletteNumber, String sound, TextColor coloring, float volume) {
 
-        Title.Times times = Title.Times.times(Duration.ofMillis(0), Duration.ofMillis(3000), Duration.ofMillis(1000));
+        Title.Times times = Title.Times.times(Duration.ofMillis(0), Duration.ofMillis(2000), Duration.ofMillis(250));
 
         final Component mainTitle = Component.text(rouletteNumber,coloring);
         final Component subtitle = Component.empty();

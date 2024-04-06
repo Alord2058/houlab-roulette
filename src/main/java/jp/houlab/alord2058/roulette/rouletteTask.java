@@ -4,7 +4,7 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -27,132 +27,161 @@ public class rouletteTask extends BukkitRunnable {
         }
     }
 
-    public void showMyTitle(final @NonNull Audience target, int rouletteNumber) {
+    public void playSoundTitle(final @NonNull Audience players, int rouletteNumber, String sound, TextColor coloring, float volume) {
 
         Title.Times times = Title.Times.times(Duration.ofMillis(0), Duration.ofMillis(3000), Duration.ofMillis(1000));
 
-        final Component mainTitle = Component.text(rouletteNumber, NamedTextColor.WHITE);
+        final Component mainTitle = Component.text(rouletteNumber,coloring);
         final Component subtitle = Component.empty();
 
         // Creates a simple title with the default values for fade-in, stay on screen and fade-out durations
         final Title title = Title.title(mainTitle, subtitle,times);
 
         // Send the title to your audience
-        target.showTitle(title);
+        players.showTitle(title);
+
+        Sound chooseSound = Sound.sound(Key.key(sound), Sound.Source.MASTER, volume, 1f);
+        players.playSound(chooseSound);
     }
+
+    String noteBlockHat = "block.note_block.hat";
+    String villagerAmbient = "entity.villager.ambient";
+    String catStrayAmbient ="entity.cat.stray_ambient";
+    String fireworkRocketLaunch ="entity.firework_rocket.launch";
+    String blazeShoot ="entity.blaze.shoot";
+    String goatHornSound0 ="item.goat_horn.sound.0";
+    String enderDragonAmbient ="entity.ender_dragon.ambient";
+
+    float volume = 0.9f;
+
+    int r = 0;
+    int g = 0;
+    int b = 237;
+
+    int rouletteNumber = 0;
 
     @Override
     public void run() {
 
-        Random rand = new Random();
-        int rouletteNumber = rand.nextInt(6) + 1;
+        int countB = this.plugin.getConfig().getInt("count");
+        Audience players = this.plugin.adventure().players();
 
-        if (count <= 100 && count > 90) {
+        if (count <= countB && count > countB - 10) {
             count--;
-            Audience players = this.plugin.adventure().players();
-            showMyTitle(players, rouletteNumber);
-            Sound noteBlockHat = Sound.sound(Key.key("block.note_block.hat"), Sound.Source.MASTER, 1f, 1f);
-            players.playSound(noteBlockHat);
+            g += 23;
+            Random rand = new Random();
+            rouletteNumber = rand.nextInt(6) + 1;
+            playSoundTitle(players, rouletteNumber,noteBlockHat,TextColor.color(r,g,b), volume);
 
-
-        } else if (count <= 90 && count > 70) {
+        } else if (count <= countB - 10 && count > countB - 30) {
             if (count % 2 == 0) {
                 count--;
-                Audience players = this.plugin.adventure().players();
-                showMyTitle(players, rouletteNumber);
-                Sound noteBlockHat = Sound.sound(Key.key("block.note_block.hat"), Sound.Source.MASTER, 1f, 1f);
-                players.playSound(noteBlockHat);
+                b -= 11;
+                Random rand = new Random();
+                rouletteNumber = rand.nextInt(6) + 1;
+                playSoundTitle(players, rouletteNumber,noteBlockHat,TextColor.color(r,g,b), volume);
 
             } else {
                 count--;
+                b -= 11;
             }
 
-        } else if (count <= 70 && count > 50) {
+        } else if (count <= countB - 30 && count > countB - 50) {
             if (count % 3 == 0) {
                 count--;
-                Audience players = this.plugin.adventure().players();
-                showMyTitle(players, rouletteNumber);
-                Sound noteBlockHat = Sound.sound(Key.key("block.note_block.hat"), Sound.Source.MASTER, 1f, 1f);
-                players.playSound(noteBlockHat);
+                r += 11;
+                Random rand = new Random();
+                rouletteNumber = rand.nextInt(6) + 1;
+                playSoundTitle(players, rouletteNumber,noteBlockHat,TextColor.color(r,g,b), volume);
 
             } else {
                 count--;
+                r += 11;
             }
 
-        } else if (count <= 50 && count > 30){
+        } else if (count <= countB - 50 && count > countB - 70){
             if (count % 4 == 0) {
                 count--;
-                Audience players = this.plugin.adventure().players();
-                showMyTitle(players, rouletteNumber);
-                Sound noteBlockHat = Sound.sound(Key.key("block.note_block.hat"), Sound.Source.MASTER, 1f, 1f);
-                players.playSound(noteBlockHat);
+                g -= 11;
+                Random rand = new Random();
+                rouletteNumber = rand.nextInt(6) + 1;
+                playSoundTitle(players, rouletteNumber,noteBlockHat,TextColor.color(r,g,b), volume);
 
             } else {
                 count--;
+                g -= 11;
             }
 
-        } else if (count <= 30 && count > 0) {
+        } else if (count <= countB - 70 && count > countB - 100) {
             if (count % 15 == 0) {
                 count--;
-                Audience players = this.plugin.adventure().players();
-                showMyTitle(players, rouletteNumber);
-                Sound noteBlockHat = Sound.sound(Key.key("block.note_block.hat"), Sound.Source.MASTER, 1f, 1f);
-                players.playSound(noteBlockHat);
+                Random rand = new Random();
+                rouletteNumber = rand.nextInt(6) + 1;
+                playSoundTitle(players, rouletteNumber,noteBlockHat,TextColor.color(r,g,b), volume);
 
             } else {
                 count--;
             }
 
-        } else {
+        } else if (count == countB - 100) {
+            count--;
+            Random rand = new Random();
+            rouletteNumber = rand.nextInt(6) + 1;
             switch (rouletteNumber) {
                 case 1 -> {
-                    Audience players = this.plugin.adventure().players();
-                    showMyTitle(players, rouletteNumber);
-                    Sound villagerSound = Sound.sound(Key.key("entity.villager.ambient"), Sound.Source.MASTER, 1f, 1f);
-                    players.playSound(villagerSound);
-                    this.cancel();
+                    volume = 0.75f;
+                    playSoundTitle(players, rouletteNumber,villagerAmbient,TextColor.color(237,0,0),volume);
                 }
-
                 case 2 -> {
-                    Audience players = this.plugin.adventure().players();
-                    showMyTitle(players, rouletteNumber);
-                    Sound catSound = Sound.sound(Key.key("entity.cat.stray_ambient"), Sound.Source.MASTER, 1f, 1f);
-                    players.playSound(catSound);
-                    this.cancel();
+                    volume = 1.0f;
+                    playSoundTitle(players, rouletteNumber,catStrayAmbient,TextColor.color(237,0,0),volume);
                 }
-
                 case 3 -> {
-                    Audience players = this.plugin.adventure().players();
-                    showMyTitle(players, rouletteNumber);
-                    Sound fireworkSound = Sound.sound(Key.key("entity.firework_rocket.launch"), Sound.Source.MASTER, 1f, 1f);
-                    players.playSound(fireworkSound);
-                    this.cancel();
+                    volume = 0.75f;
+                    playSoundTitle(players, rouletteNumber,fireworkRocketLaunch,TextColor.color(237,0,0),volume);
                 }
-
                 case 4 -> {
-                    Audience players = this.plugin.adventure().players();
-                    showMyTitle(players, rouletteNumber);
-                    Sound blazeShootSound = Sound.sound(Key.key("entity.blaze.shoot"), Sound.Source.MASTER, 1f, 1f);
-                    players.playSound(blazeShootSound);
-                    this.cancel();
+                    volume = 0.75f;
+                    playSoundTitle(players, rouletteNumber,blazeShoot,TextColor.color(237,0,0),volume);
                 }
-
                 case 5 -> {
-                    Audience players = this.plugin.adventure().players();
-                    showMyTitle(players, rouletteNumber);
-                    Sound goat_hornSound = Sound.sound(Key.key("item.goat_horn.sound.0"), Sound.Source.MASTER, 1f, 1f);
-                    players.playSound(goat_hornSound);
-                    this.cancel();
+                    volume = 0.75f;
+                    playSoundTitle(players, rouletteNumber,goatHornSound0,TextColor.color(237,0,0),volume);
                 }
-
                 case 6 -> {
-                    Audience players = this.plugin.adventure().players();
-                    showMyTitle(players, rouletteNumber);
-                    Sound ender_DragonAmbientSound = Sound.sound(Key.key("entity.ender_dragon.ambient"), Sound.Source.MASTER, 1f, 1f);
-                    players.playSound(ender_DragonAmbientSound);
-                    this.cancel();
+                    volume = 0.3f;
+                    playSoundTitle(players, rouletteNumber,enderDragonAmbient,TextColor.color(237,0,0),volume);
+
                 }
             }
+        } else if (count < countB - 100 && count > countB - 120) {
+            count--;
+
+        } else if (count == countB - 120) {
+            count--;
+            volume = 0.0f;
+            playSoundTitle(players, rouletteNumber,noteBlockHat,TextColor.color(237,237,0), volume);
+
+        } else if (count < countB - 120 && count > countB - 140) {
+            count--;
+
+        } else if (count == countB - 140)  {
+            count--;
+            playSoundTitle(players, rouletteNumber,noteBlockHat,TextColor.color(237,0,0), volume);
+
+        } else if (count < countB - 140 && count > countB - 160) {
+            count--;
+
+        } else if (count == countB - 160)  {
+            count--;
+            playSoundTitle(players, rouletteNumber,noteBlockHat,TextColor.color(237,237,0), volume);
+
+        } else if (count < countB - 160 && count > 0) {
+            count--;
+
+        } else if (count == 0)  {
+            playSoundTitle(players, rouletteNumber,noteBlockHat,TextColor.color(237,0,0), volume);
+            this.cancel();
         }
     }
 }

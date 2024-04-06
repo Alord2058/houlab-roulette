@@ -20,7 +20,7 @@ public class RightClickListener implements Listener {
         Player player = event.getPlayer();
         Material getMaterial = event.getMaterial();
 
-        int count = 100;
+        int count = this.plugin.getConfig().getInt("count");
 
         if (event.getHand() == EquipmentSlot.HAND) {
             if (event.getAction().isRightClick()) {
